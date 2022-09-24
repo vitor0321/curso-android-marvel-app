@@ -16,7 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import usecase.GetCharactersUseCase
+import com.example.core.usecase.GetCharactersUseCase
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -41,7 +41,8 @@ class CharactersViewModelTest {
 
     @Before
     fun setUp() {
-        charactersViewModel = CharactersViewModel(getCharactersUserCase)
+        charactersViewModel =
+            CharactersViewModel(getCharactersUserCase, mainCoroutineRule.testDispatcherProvider)
     }
 
     @Test
