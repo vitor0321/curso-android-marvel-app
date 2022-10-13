@@ -12,16 +12,19 @@ def apikeyPropertiesFile = rootProject.file("apikey.properties")
 def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
+def storeKeyPropertiesFile = rootProject.file("storekey.properties")
+def storeKeyProperties = new Properties()
+storeKeyProperties.load(new FileInputStream(storeKeyPropertiesFile))
+
 android {
-    compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
 
     signingConfigs {
         release {
-            storeFile file('/Users/vitorwalcker/Developer/marvel-app-hilt/store/marvel_key_store_apk')
-            storePassword 'walcker178977'
-            keyAlias 'marvel-app'
-            keyPassword 'walcker178977'
+            storeFile file(storeKeyProperties['FILE_KEY'])
+            storePassword storeKeyProperties['STORE_KEY']
+            keyAlias storeKeyProperties['ALIAS_KEY']
+            keyPassword storeKeyProperties['STORE_KEY']
         }
     }
 
@@ -76,10 +79,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.example.marvelapp'
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-measurement-api:21.0.0'
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
     def presentationDependencies = rootProject.ext.presentationDependencies
     def masterTestDependencies = rootProject.ext.masterTestDependencies
@@ -95,6 +98,7 @@ dependencies {
     implementation masterDependencies.androidCoreKtx
     implementation masterDependencies.legacySupport
     implementation masterDependencies.appcompat
+    implementation masterDependencies.googleGms
 
     kapt(dataDependencies.roomCompiler) {
         exclude group: 'com.intellij', module: 'annotations'
